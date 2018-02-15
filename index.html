@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
+        
+        <style>
+        
+        .active {
+            stroke: #000;
+            stroke-width: 2px;
+        }
+        
+        .rect {
+            pointer-events: all;
+            stroke: none;
+            stroke-width: 40px;
+        }
+        </style>
+    </head>
+    <body>
+        <script>
+        var svg = d3.select("body")
+                    .append("svg")
+                        .attr("width", "100%")
+                        .attr("height", "450")
+                        .style("border", "2px solid black")
+
+        var margin = {top: 10, right: 10, bottom: 30, left: 10},
+            width = svg.node().getBoundingClientRect().width,
+            height = svg.node().getBoundingClientRect().height;
+
+        //data
+        var rectangles = d3.range(10).map(function() {
+        return {
+            x: Math.round(Math.random() * (width)),
+            y: Math.round(Math.random() * (height))
+        };
+        });
+
+
+
+        var group = svg.selectAll('g')
+        .data(rectangles)
+        .enter().append("g")
+        //   .attr("transform", 
+        //         "translate(" + margin.left + "," + margin.top + ")")
+
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+        group.append("rect")
+                .attr("x", function(d) { return d.x; })
+                .attr("y", function(d) { return d.y; })
+                .attr("height", 40)
+                .attr("width", 100)
+                .style("fill", "#8eb9ff");
+        
+        group.append("text")
+                .attr("x", function(d) { return d.x + 50; })
+                .attr("y", function(d) { return d.y + 20; })
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "middle")
+                .style("fill", "black")
+                .text("Close");  
+            
+        function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+        }
+
+        function dragged(d) {
+        d3.select(this).select("text")
+            .attr("x", d.x = d3.event.x+50)
+            .attr("y", d.y = d3.event.y+20);
+        d3.select(this).select("rect")
+            .attr("x", d.x = d3.event.x)
+            .attr("y", d.y = d3.event.y);
+        }
+
+        function dragended(d) {
+        d3.select(this).classed("active", false);
+        }
+
+        var data = [{'name': 'Arima Communicacoes Brasil Ltda', 'holder': '王大明', 'percentage': '50.00%'}, 
+                    {'name': 'Arima Communicacoes Brasil Ltda', 'holder': '華冠通訊股份有限公司', 'percentage': '50.00%'}, 
+                    {'name': 'Technovation (Cayman) Corp.', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': 'Arima Communication (Cayman) Corp.', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '冠如投資股份有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '冠達智能科技股份有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '創生投資股份有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '華彩創意股份有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '重慶創華科技有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '40.00%'}, 
+                    {'name': '華信光電股份有限公司', 'holder': '華冠通訊股份有限公司', 'percentage': '19.89%'}, 
+                    {'name': '華冠通訊(江蘇)有限公司', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '100.00%'}, 
+                    {'name': '利達通信(蘇州)有限公司', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '100.00%'}, 
+                    {'name': '華宇科技(南京)有限公司', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '100.00%'}, 
+                    {'name': '宇詮國際貿易(上海)有限公司', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '100.00%'}, 
+                    {'name': '華冠科技(浙江)有限公司', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '100.00%'}, 
+                    {'name': 'PT Adi Reka Mandri', 'holder': 'Arima Communication (Cayman) Corp.', 'percentage': '45.00%'}, 
+                    {'name': '華昌能源股份有限公司', 'holder': '冠如投資股份有限公司', 'percentage': '96.62%'}, 
+                    {'name': 'Nexus Management Ltd.', 'holder': '冠如投資股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': '德田農業生技股份有限公司', 'holder': '創生投資股份有限公司', 'percentage': '99.01%'}, 
+                    {'name': '光利能源股份有限公司', 'holder': '華昌能源股份有限公司', 'percentage': '100.00%'}, 
+                    {'name': 'Qichuang Global Limited', 'holder': 'Nexus Management Ltd.', 'percentage': '30.00%'}]
+
+
+        data.map(function(row, idx){
+            console.log(idx)
+            console.log(row)
+            return {
+                x: Math.round(Math.random() * (width)),
+                y: Math.round(Math.random() * (height))
+            }
+        })
+
+        </script>
+    </body>
+</html>
+
+
